@@ -113,7 +113,7 @@ const SetSizeArea = (props) => {
               ))}
           </TableBody>
         </Table>
-        <div className="center">
+        <div>
           <TextInput
             fullWidth={false}
             label={'サイズ'}
