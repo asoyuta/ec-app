@@ -1,10 +1,12 @@
 import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, makeStyles } from '@material-ui/core'
-import { getProductsInCart } from '../reducks/users/selectors'
+import { getProductsInCart, getUserId } from '../reducks/users/selectors'
 import { CartListItem } from '../components/Products'
 import { PrimaryButton, GreyButton } from '../components/UIkit'
 import { push } from 'connected-react-router'
+import { db } from '../firebase'
+import { fetchProductsInCart } from '../reducks/users/operations'
 
 const useStyles = makeStyles({
   root: {
@@ -19,7 +21,7 @@ const CartList = () => {
 
   const dispatch = useDispatch()
   const selector = useSelector((state) => state)
-  const productsInCart = getProductsInCart(selector)
+  let productsInCart = getProductsInCart(selector)
 
   const goToOrder = useCallback(() => {
     dispatch(push('/order/confirm'))

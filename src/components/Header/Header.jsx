@@ -5,7 +5,7 @@ import logo from '../../assets/img/icons/logo.png'
 import { useSelector, useDispatch } from 'react-redux'
 import { getIsSignedIn } from '../../reducks/users/selectors'
 import { push } from 'connected-react-router'
-import { HeaderMenus, ClosableDrawer } from '.'
+import { HeaderMenu, ClosableDrawer } from '.'
 
 const useStyles = makeStyles({
   root: {
@@ -50,7 +50,7 @@ const Header = () => {
           <img src={logo} alt="Torahack Logo" width="128px" onClick={() => dispatch(push('/'))} />
           {isSignedIn && (
             <div className={classes.iconButtons}>
-              <HeaderMenus handleDrawerToggle={handleDrawerToggle} />
+              <HeaderMenu handleDrawerToggle={handleDrawerToggle} />
             </div>
           )}
         </Toolbar>

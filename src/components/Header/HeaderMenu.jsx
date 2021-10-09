@@ -11,7 +11,7 @@ import { db } from '../../firebase'
 import { fetchProductsInCart } from '../../reducks/users/operations'
 import { push } from 'connected-react-router'
 
-const HeaderMenus = (props) => {
+const HeaderMenu = (props) => {
   const dispatch = useDispatch()
   const selector = useSelector((state) => state)
   const uid = getUserId(selector)
@@ -36,7 +36,7 @@ const HeaderMenus = (props) => {
               productsInCart[index] = product
               break
             case 'removed':
-              productsInCart = productsInCart.filter((product) => productsInCart.cartId !== change.doc.id)
+              productsInCart = productsInCart.filter((product) => product.cartId !== change.doc.id)
               break
             default:
               break
@@ -64,4 +64,4 @@ const HeaderMenus = (props) => {
   )
 }
 
-export default HeaderMenus
+export default HeaderMenu
