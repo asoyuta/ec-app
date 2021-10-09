@@ -1,8 +1,9 @@
 export const initialState = {
   products: {
-    list: []
+    list: [],
   },
   users: {
+    cart: [],
     isSignedIn: false,
     role: '',
     uid: '',
