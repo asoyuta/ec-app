@@ -1,7 +1,17 @@
 import React from 'react'
 import { Route, Switch } from 'react-router'
 import Auth from './Auth'
-import { ProductDetail, ProductList, SignIn, SignUp, Reset, ProductEdit, CartList, OrderConfirm } from './templates'
+import {
+  ProductDetail,
+  ProductList,
+  SignIn,
+  SignUp,
+  Reset,
+  ProductEdit,
+  CartList,
+  OrderConfirm,
+  OrderHistory,
+} from './templates'
 
 const Router = () => {
   return (
@@ -12,10 +22,11 @@ const Router = () => {
       <Auth>
         <Route exact path="(/)?" component={ProductList} />
         <Route exact path="/product/:id" component={ProductDetail} />
-        <Route path="/product/edit(/:id)?" component={ProductEdit} />
+        <Route exact path="/product/edit(/:id)?" component={ProductEdit} />
 
         <Route exact path="/cart" component={CartList} />
         <Route exact path="/order/confirm" component={OrderConfirm} />
+        <Route exact path="/order/history" component={OrderHistory} />
       </Auth>
     </Switch>
   )

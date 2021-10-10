@@ -1,14 +1,36 @@
-import { fetchProductsInCartAction, signInAction, signOutAction } from './actions'
+import { fetchOrdersHistoryAction, fetchProductsInCartAction, signInAction, signOutAction } from './actions'
 import { push } from 'connected-react-router'
 import { auth, db, FirebaseTimestamp } from '../../firebase'
+
+const usersRef = db.collection('users')
 
 export const addProductToCart = (addedProduct) => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid
-    const cartRef = db.collection('users').doc(uid).collection('cart').doc()
+    const cartRef = usersRef.doc(uid).collection('cart').doc()
     addedProduct['cartId'] = cartRef.id
     await cartRef.set(addedProduct)
     dispatch(push('/cart'))
+  }
+}
+
+export const fetchOrdersHistory = () => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid
+    const list = []
+
+    usersRef
+      .doc(uid)
+      .collection('orders')
+      .orderBy('updated_at', 'desc')
+      .get()
+      .then((snapshots) => {
+        snapshots.forEach((snapshot) => {
+          const data = snapshot.data()
+          list.push(data)
+        })
+        dispatch(fetchOrdersHistoryAction(list))
+      })
   }
 }
 
@@ -24,7 +46,7 @@ export const listenAuthState = () => {
       if (user) {
         const uid = user.uid
 
-        db.collection('users')
+        usersRef
           .doc(uid)
           .get()
           .then((snapshot) => {
@@ -78,7 +100,7 @@ export const signIn = (email, password) => {
       if (user) {
         const uid = user.uid
 
-        db.collection('users')
+        usersRef
           .doc(uid)
           .get()
           .then((snapshot) => {
@@ -128,7 +150,7 @@ export const signUp = (username, email, password, confirmPassword) => {
           username: username,
         }
 
-        db.collection('users')
+        usersRef
           .doc(uid)
           .set(userInitialData)
           .then(() => {

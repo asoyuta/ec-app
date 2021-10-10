@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import {
@@ -12,6 +12,7 @@ import { TextInput } from '../UIkit'
 import { push } from 'connected-react-router'
 import { useDispatch } from 'react-redux'
 import { signOut } from '../../reducks/users/operations'
+import { db } from '../../firebase'
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -50,6 +51,26 @@ const ClosableDrawer = (props) => {
     props.onClose(event)
   }
 
+  const [filters, setFilters] = useState([
+    { func: selectMenu, label: 'すべて', id: 'all', value: '/' },
+    { func: selectMenu, label: 'メンズ', id: 'male', value: '/?gender=male' },
+    { func: selectMenu, label: 'レディース', id: 'female', value: '/?gender=female' },
+  ])
+
+  useEffect(() => {
+    db.collection('categories')
+      .orderBy('order', 'asc')
+      .get()
+      .then((snapshots) => {
+        const list = []
+        snapshots.forEach((snapshot) => {
+          const category = snapshot.data()
+          list.push({ func: selectMenu, label: category.name, id: category.id, value: `/?category=${category.id}` })
+        })
+        setFilters((prevState) => [...prevState, ...list])
+      })
+  }, [])
+
   const menus = [
     {
       func: selectMenu,
@@ -81,11 +102,11 @@ const ClosableDrawer = (props) => {
         variant="temporary"
         anchor="right"
         open={props.open}
-        onClose={(e) => props.onClose(e)}
+        onClose={(event) => props.onClose(event)}
         classes={{ paper: classes.drawerPaper }}
         ModalProps={{ keepMounted: true }}
       >
-        <div onClose={(e) => props.onClose(e)} onKeyDown={(e) => props.onClose(e)}>
+        <div onClose={(event) => props.onClose(event)} onKeyDown={(event) => props.onClose(event)}>
           <div className={classes.searchField}>
             <TextInput
               fullWidth={false}
@@ -104,7 +125,7 @@ const ClosableDrawer = (props) => {
           <Divider />
           <List>
             {menus.map((menu) => (
-              <ListItem button key={menu.id} onClick={(e) => menu.func(e, menu.value)}>
+              <ListItem button key={menu.id} onClick={(event) => menu.func(event, menu.value)}>
                 <ListItemIcon>{menu.icon}</ListItemIcon>
                 <ListItemText primary={menu.label} />
               </ListItem>
@@ -115,6 +136,14 @@ const ClosableDrawer = (props) => {
               </ListItemIcon>
               <ListItemText primary="Logout" />
             </ListItem>
+          </List>
+          <Divider />
+          <List>
+            {filters.map(filter => (
+              <ListItem button key={filter.id} onClick={(event) => filter.func(event, filter.value)}>
+                <ListItemText primary={filter.label} />
+              </ListItem>
+            ))}
           </List>
         </div>
       </Drawer>
