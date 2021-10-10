@@ -5,8 +5,6 @@ import { getProductsInCart, getUserId } from '../reducks/users/selectors'
 import { CartListItem } from '../components/Products'
 import { PrimaryButton, GreyButton } from '../components/UIkit'
 import { push } from 'connected-react-router'
-import { db } from '../firebase'
-import { fetchProductsInCart } from '../reducks/users/operations'
 
 const useStyles = makeStyles({
   root: {

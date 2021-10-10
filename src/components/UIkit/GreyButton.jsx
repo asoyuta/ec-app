@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    backgroundColor: '#4dd0e1',
+    backgroundColor: theme.palette.grey['300'],
     color: '#000',
     fontSize: 16,
     height: 48,

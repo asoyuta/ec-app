@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { storage } from '../../firebase/index'
 import { makeStyles } from '@material-ui/styles'
-import IconButton from '@material-ui/core/IconButton'
-import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
+import { IconButton } from '@material-ui/core'
+import { AddPhotoAlternate as AddPhotoAlternateIcon } from '@material-ui/icons'
 import { ImagePreview } from '.'
 
 const useStyles = makeStyles({
@@ -57,7 +57,9 @@ const ImageArea = (props) => {
     <div>
       <div className="p-grid__list-images">
         {props.images.length > 0 &&
-          props.images.map((image) => <ImagePreview delete={deleteImage} path={image.path} key={image.id} id={image.id} />)}
+          props.images.map((image) => (
+            <ImagePreview delete={deleteImage} path={image.path} key={image.id} id={image.id} />
+          ))}
       </div>
       <div className="u-text-right">
         <span>商品画像を登録する</span>

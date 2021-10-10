@@ -8,6 +8,7 @@ export const addProductToCart = (addedProduct) => {
     const cartRef = db.collection('users').doc(uid).collection('cart').doc()
     addedProduct['cartId'] = cartRef.id
     await cartRef.set(addedProduct)
+    dispatch(push('/cart'))
   }
 }
 
